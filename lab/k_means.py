@@ -1,5 +1,6 @@
 # Clustering with basic k-means
 import sys
+import word_cloud
 sys.path.append("..")
 
 import clusters as utils
@@ -36,6 +37,41 @@ def write_output(country_clusters, output_f):
             output.write("['" + country + "', " + str(i) + "],\n")  # Manually fix the end
 
     output.close()
+
+
+def make_word_clouds(clusters, vectors):
+    # First open the keywords file
+    keyword_file = open("data/dimensions_keywords.csv")
+    lines = keyword_file.read().split('\n')
+    keywords = []
+    for i in range(len(lines)):
+        if i == 0:
+            continue
+
+        keywords.append(lines[i].split(',')[1:])
+
+    for j in range(len(clusters)):
+        cluster = clusters[j]
+        words = []
+        centroid = get_centroid(cluster, vectors)
+
+        for i in range(len(centroid)):
+            if centroid[i] > 50:
+                label = 0
+            else:
+                label = 1
+
+            words += keywords[i][label].split(' ')
+
+        d = {}
+        for w in words:
+            if w in d:
+                d[w] += 1
+            else:
+                d[w] = 1
+
+        word_counts = [(w, count/20) for w, count in d.items()]
+        word_cloud.create_cloud("clouds/{}.png".format(str(j)), word_counts)
 
 
 def get_centroid(cluster, vectors):
@@ -81,6 +117,7 @@ def main(input_f, output_f):
     print("SSE: " + str(sse(proper_clusters, vectors)))
 
     write_output(country_clusters, output_f)
+    make_word_clouds(clusters, vectors)
 
 
 if __name__ == "__main__":
