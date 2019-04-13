@@ -1,3 +1,6 @@
+import sys
+sys.path.append("..")
+
 import clusters
 
 missing = []  # Indexes of countries with missing values
