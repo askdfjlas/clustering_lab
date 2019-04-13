@@ -5,7 +5,7 @@ sys.path.append("..")
 import clusters as utils
 
 data_range = range(2, 8)  # Useful sub-indexes
-num_clusters = 5
+num_clusters = 7
 distance_function = utils.pearson
 
 

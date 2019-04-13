@@ -5,7 +5,7 @@ sys.path.append("..")
 import clusters as utils
 
 distance_function = utils.pearson
-num_clusters = 5
+num_clusters = 7
 
 
 def kcluster_bisect(clusters, vectors, distance=utils.euclidean, k=4):
