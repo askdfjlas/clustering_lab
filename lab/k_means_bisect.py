@@ -39,7 +39,7 @@ def kcluster_bisect(clusters, vectors, distance=utils.euclidean, k=4):
     return kcluster_bisect(clusters + new_clusters, vectors, distance=distance, k=k)
 
 
-def main(input_f, output_f):
+def main(input_f):
     (countries, vectors) = k_means.read_file(input_f)
 
     clusters = kcluster_bisect([list(range(len(vectors)))], vectors, distance=distance_function, k=num_clusters)
@@ -56,4 +56,4 @@ def main(input_f, output_f):
 
 
 if __name__ == "__main__":
-    main("data/preprocessed.csv", "")
+    main("data/preprocessed.csv")

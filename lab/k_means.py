@@ -25,6 +25,19 @@ def read_file(input_f):
     return countries, vectors
 
 
+def write_output(country_clusters, output_f):
+    output = open(output_f, "w")
+    output.write("[['Country', 'Value'],\n")
+
+    for i in range(len(country_clusters)):
+        cluster = country_clusters[i]
+
+        for country in cluster:
+            output.write("['" + country + "', " + str(i) + "],\n")  # Manually fix the end
+
+    output.close()
+
+
 def get_centroid(cluster, vectors):
     centroid = [0 for i in range(len(vectors[0]))]
 
@@ -55,6 +68,7 @@ def main(input_f, output_f):
 
     clusters = utils.kcluster(vectors, distance=distance_function, k=num_clusters)
     proper_clusters = []  # Nonempty clusters
+    country_clusters = []  # Clusters of country names instead of indexes
     for i in range(num_clusters):
         if len(clusters[i]) == 0:
             continue
@@ -62,9 +76,12 @@ def main(input_f, output_f):
         proper_clusters.append(clusters[i])
         print('cluster {}:'.format(i + 1))
         print([countries[r] for r in clusters[i]])
+        country_clusters.append([countries[r][1] for r in clusters[i]])
 
     print("SSE: " + str(sse(proper_clusters, vectors)))
 
+    write_output(country_clusters, output_f)
+
 
 if __name__ == "__main__":
-    main("data/preprocessed.csv", "")
+    main("data/preprocessed.csv", "data/country_clusters.json")

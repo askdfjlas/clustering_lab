@@ -20,7 +20,7 @@ def get_all(cluster, ids):  # Get all IDs in a cluster
         ids.append(cluster.id)
 
 
-def main(input_f, output_f):
+def main(input_f):
     (countries, vectors) = k_means.read_file(input_f)
 
     clusters = utils.hcluster(vectors, distance=distance_function)
@@ -46,4 +46,4 @@ def main(input_f, output_f):
 
 
 if __name__ == "__main__":
-    main("data/preprocessed.csv", "")
+    main("data/preprocessed.csv")
