@@ -61,16 +61,17 @@ def make_word_clouds(clusters, vectors):
             else:
                 label = 1
 
-            words += keywords[i][label].split(' ')
+            words.append((keywords[i][label].split(' '), (centroid[i] if centroid[i] > 50 else 100 - centroid[i])))
 
         d = {}
-        for w in words:
-            if w in d:
-                d[w] += 1
-            else:
-                d[w] = 1
+        for (word_list, weight) in words:
+            for word in word_list:
+                if word in d:
+                    d[word] += weight/100
+                else:
+                    d[word] = weight/100
 
-        word_counts = [(w, count/20) for w, count in d.items()]
+        word_counts = [(w, count/15) for w, count in d.items()]
         word_cloud.create_cloud("clouds/{}.png".format(str(j)), word_counts)
 
 
